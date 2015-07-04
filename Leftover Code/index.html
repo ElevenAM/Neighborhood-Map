@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<head>
+  <meta charset=utf-8>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Neighborhood Map">
+  <meta name="author" content="Liam Nguyen">
+  <script rel="stylesheet" type="text/css" href="css/style.css">
+//link APIs, stylesheets and scripts
+  <script type = "text/javascript" src ="https://maps.googleapis.com/maps/api/js?key=API_KEY">
+  <script type="text/javascript">
+    function initialize() {
+      center: {lat: X, lng: Y},
+      zoom: 8
+    };
+  google.maps.event.addDomListener(window,'load',initialize);
+  </script>
+</head>
+<body>
+  <div id="map-canvas" style="position: relative; overflow: hidden; transformZ(0px)"></div>
+  <button class = "list-toggle" data-bind="something"></button>
+  <!--Code for the list that will hold all the API stuff-->
+  <button class =
+
+
+ <form class='search' data-bind="submit: search">
+    <input class="search-bar" data-bind="value: query" placeholder="Filter results by name or type" autofocus></input>
+    <button class="search-button" type="submit">
+      <i class="fa fa-search fa-2x fa-inverse"></i>
+    </button>
+  </form>
+
+  <button class="list-toggle" data-bind="click: toggleListDisplay,
+                                           css: {'small-list-toggle': !displayingList() }">
+    <i data-bind="css: {'fa-minus-square': displayingList(),
+                    'fa-plus-square': !displayingList() }" class="fa fa-2x fa-inverse"></i>
+  </button>
+  <ul class="filtered-places" data-bind="visible: filteredPlaces().length,
+                                           foreach: {data: filteredPlaces, as: 'place'},
+                                           css: {  'list-view-hidden': !displayingList()}">
+    <li class="place" data-bind="click: function() { $root.selectPlace(place); },
+                                  css: {'chosen-place': $data === $root.chosenPlace()},
+                                  attr: { id: place.id }">
+      <div class="place-info">
+        <h4 data-bind="text: place.name"></h4>
+        <p data-bind="text: place.vicinity"></p>
+      </div>
+      <div class="photo-count">
+        <i class="fa fa-instagram"></i>
+        <span data-bind="visible: !place.isGettingInstagrams(),
+                           text: place.instagrams().length"></span>
+        <i class="fa fa-refresh fa-spin" data-bind="visible: place.isGettingInstagrams()"></i>
+      </div>
+    </li>
+  </ul>
+  <div class="no-results" data-bind="visible: filteredPlaces().length === 0,
+                                       css: {'list-view-hidden': !displayingList()}">
+    No results matched your search
+  </div>
+
+</body>
+
+<form role="form">
+  <div class ="checkbox">
+    <label><input type="checkbox"> Food </label>
+    <label><input type="checkbox"> Type 2 </label>
+  </div>
+  <div class="checkbox">
+    <label><input type
+//Two Columns
+    <label><input type="checkbox"> Food </label>
+    <label><input type="checkbox"> Type 2 </label>
+  </div>
+  <div class="checkbox">
+    <label><input type
+</body>

@@ -1,0 +1,25 @@
+
+
+h2 {
+
+}
+
+h3 {
+
+}
+
+#map-canvas {
+  z-index: -5;
+}
+
+#yelpBox {
+  z-index:5;
+  width: 20%;
+  left-margin: 80%;
+
+}
+
+#rating {
+
+}
+

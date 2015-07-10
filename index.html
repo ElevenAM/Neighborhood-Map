@@ -12,6 +12,8 @@
   </style>
     <link href="css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
+<!--Was having issues pulling certain Places functionality from Google so I made requests
+for both Google Maps and Google Places-->
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQrpDHpHEuyRGCZcH_Rsf74BXf0_eQkI8"></script>
   <script src="http://maps.google.com/maps/api/js?sensor=true&libraries=places" type="text/javascript"></script>
 
@@ -29,6 +31,7 @@
 
   <button class="list-toggle" data-bind="click: toggleListDisplay,
                                            css: {'small-list-toggle': !displayingList() }">
+    <!--Font awesome specific i tag to create icons and icon functions-->
     <i data-bind="css: {'fa-minus-square': displayingList(),
                     'fa-plus-square': !displayingList() }" class="fa fa-2x fa-inverse"></i>
   </button>
@@ -56,7 +59,7 @@
   </div>
 
 
-  <!-- Show clickable Instagram button there is a chosenPlace -->
+  <!-- Instagram Viewer -->
   <div data-bind="if: chosenPlace">
     <button id="instagram-button" class="center-x" data-bind="click: togglePhotoDisplay,
                                              disable: chosenPlace().instagrams().length === 0">
@@ -64,7 +67,6 @@
     </button>
     <p class="photo-status center-x" data-bind="text: getInstagramStatus"></p>
   </div>
-  <!-- Show faded disabled Instagram button if there is no chosenPlace -->
   <div data-bind="ifnot: chosenPlace">
     <button id="instagram-button" class="center-x" disabled>
       <img src="images/instagram.png">
@@ -72,7 +74,7 @@
     <p class="photo-status center-x">Please select a location to view Instagrams</p>
   </div>
 
-  <!-- Photo gallery that displays when Instagram button is clicked -->
+  <!-- Instagram Photo Gallery -->
   <div class="backdrop" data-bind="if: chosenPhoto,
                                    visible: viewingPhotos()">
     <div class="photo-title">

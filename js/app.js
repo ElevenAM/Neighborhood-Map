@@ -1,11 +1,11 @@
-var ViewModel = function() { //Note that I haven't closed this function yet.
+var ViewModel = function() {
     var self = this;
     var huntingtonBeach,
         map,
         infowindow,
         bounds;
 
-    // open hours property.
+    // For displayInfo function later down the line
     var dateMap = {
         0: 'Monday',
         1: 'Tuesday',
@@ -17,10 +17,12 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
     };
 
     function initialize() {
+        //For ease of future reference
         huntingtonBeach = new google.maps.LatLng(33.658, -118.001);
         map = new google.maps.Map(document.getElementById('map-canvas'), {
             center: huntingtonBeach,
             zoom: 18,
+            //Changes Map Type into an angled terrain style
             mapTypeId: google.maps.MapTypeId.HYBRID,
             zoomControl: false,
             overviewMapControl: false,
@@ -31,11 +33,7 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         getAllPlaces();
     }
 
-
-    /**
-     * Makes a request to Google for popular restaurants and bars in Boston.
-     * Executes a callback function with the response data from Google.
-     */
+    //Specifies request and plugs it into a Google Search. Runs Callback when finished
     function getAllPlaces() {
         self.allPlaces([]);
         var request = {
@@ -48,62 +46,22 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         service.nearbySearch(request, getAllPlacesCallback);
     }
 
-    /**
-     * Gets resulting places from getAllPlaces Google request.  Adds additional
-     * properties to the places and adds them to the allPlaces array.  Begins
-     * an Instagram request to get recent media for this location.  The results
-     * of that request will be stored in the place's instagram array created
-     * in this function.
-     * @param {Array.<Object>} results Array of PlaceResult objects received
-     *      in response to getAllPlaces' request.
-     * @param {string} status String indicating status of getAllPlaces request.
-     */
+    /*Launched after previous getAllPlacesFunction. Takes the results of the Google
+    * requestand adds them to an allPlaces array. Runs instagram request for each location
+    */
     function getAllPlacesCallback(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-            // Create new bounds for the map.  Will be updated with each new
-            // location.  This will be used to make sure all markers are
-            // visible on the map after the search.
             results.forEach(function (place) {
                 place.marker = createMarker(place);
-                /**
-                 * Array to store data from Instagram API request.  Array
-                 * is observable so data can be stored and accessed after
-                 * this place is pushed to the allPlaces array.  This way
-                 * the page can load and doesn't have to wait for data from
-                 * Instagram.
-                 * @type {Array.<Object>}
-                 */
                 place.instagrams = ko.observableArray([]);
-                /**
-                 * Property that is true if the getInstagrams function is still
-                 * running for this place.  Used to distinguish difference
-                 * places with no Instagram data and places that are still
-                 * in the process of getting the data.
-                 * @type: {boolean}
-                 */
                 place.isGettingInstagrams = ko.observable(true);
-                /**
-                 * If property is true, place will be included in the
-                 * filteredPlaces array and will be displayed on screen.
-                 * Initially, all places will be in the filteredPlaces Array.
-                 * @type {boolean}
-                 */
                 place.isInFilteredList = ko.observable(true);
                 self.allPlaces.push(place);
                 getInstagrams(place);
             });
-            // Done looping through results so fit map to include all markers.
-            map.fitBounds(bounds);
         }
     }
 
-        /**
-     * Takes a PlaceResult object and puts a marker on the map at its location.
-     * @param {Object} place A PlaceResult object returned from a Google Places
-     *   Library request.
-     * @return {Object} marker A Google Maps Marker objecte to be placed on the
-     *   map.
-     */
     function createMarker(place) {
         var marker = new google.maps.Marker({
             map: map,
@@ -118,24 +76,12 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         return marker;
     }
 
-    /**
-     * Takes an address (in this case a place's formatted_address property) and
-     * returns just the street.
-     * @param {string} address The location's full address.
-     * @param {string} street The locations street.
-     */
     function getStreet(address) {
         var firstComma = address.indexOf(',');
         var street = address.slice(0, firstComma) + '.';
         return street;
     }
 
-    /**
-     * Takes an address (in this case a place's formatted_address property) and
-     * returns just the city and state.
-     * @param {string} address The location's full address.
-     * @param {string} street The locations city and state.
-     */
     function getCityState(address) {
         var firstComma = address.indexOf(',');
         var cityState = address.slice(firstComma + 1);
@@ -143,13 +89,11 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         return cityState;
     }
 
-    /**
-     * Gets numeric value for day of week and converts it to match values
-     * used in the PlaceResult object opening_hours property.
-     * @return {number} today Numeric value corresponding to day of week.
-     */
     function getDayofWeek() {
         var date = new Date();
+    /*Gets a numeric value for day of the week as specified by earlier dateMap var
+    * and matches it with the opening_hours property fo the PlaceResult object
+    */
         var today = date.getDay();
         if (today === 0) {
             today = 6;
@@ -159,7 +103,6 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         return today;
     }
 
-    // Resizes Instagram photo being displayed based on the window size.
     function resizePhoto() {
         if ($(window).height() < $(window).width()) {
             self.photoDimensionValue($(window).height() - 160);
@@ -168,33 +111,15 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         }
     }
 
-    /*
-     * Gets all recent media from Instagram from a given location.  Loads the
-     * resulting data into the corresponding place's instagram observable array.
-     * @param {Object} place A PlaceResult object.
-     */
+    // Gets Instagram info and places in a corresponding observable array
     function getInstagrams(place) {
-        /**
-         * Instagram can have multiple names for the same location and they
-         * may not be exactly the same as Google's name.  This function loops
-         * through the data from Instagram and checks if the locations match
-         * the place specified in getInstagrams.
-         * @param {Array.<Object>} results Array of results from Instagram
-         *      location search.
-         * @return {Array.<string>} locationIds Array of Instagram location ID's.
-         */
+//Double checks a locations name with Instagram's location ID's
         function getLocationIds(results) {
             var locationIds = [];
-            // Strip out all non-alphanumeric characters and whitespace.  This
-            // makes it easy to compare if the place's name matches the name(s)
-            // Instagram has for it.
             var checkName = place.name.toLowerCase().replace(/[^\w]/gi, '');
             var compareName;
             results.data.forEach(function (result) {
                 compareName = result.name.toLowerCase().replace(/[^\w]/gi, '');
-                // If either name contains the other, then they're probably the
-                // same.  There's definitely a more sophisticated way to do this
-                // but this seems to be effective.
                 if (checkName.indexOf(compareName) !== -1 ||
                     compareName.indexOf(checkName) !== -1) {
                     locationIds.push(result.id);
@@ -203,17 +128,6 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
             return locationIds;
         }
 
-        /**
-         * Gets recent media from Instagram for the location specified by its
-         * location ID in the url input.  This is a deferred funciton because
-         * I will be calling this multiple times for each place.  I want to
-         * execute a callback function after all the asynchronous requests
-         * have completed.  The media from Instagram is stored in the place's
-         * instagrams array.  Helper function for getAllPhotos.
-         * @param {string} url Url for Instagram media request.
-         * @return {Object} Deferred object's promise.  Used to check if the
-         *      function completed its work.
-         */
         function getPhotosById(url) {
             var def = $.Deferred();
             $.ajax({
@@ -231,19 +145,10 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
             return def.promise();
         }
 
-        /**
-         * Calls getPhotosById for each location ID returned from getLocationIds.
-         * When all Instagram requests have completed, sort the place's instagram
-         * array by the number of likes the photo has and set the place's
-         * isGettingInstagrams property to false.
-         * @param {Array.<Object>} results Array of results from Instagram
-         *      location search.
-         */
+        //Calls getPhotosbyID for each location ID and sorts them in array by likes
         function getAllPhotos(results) {
             var locIds = getLocationIds(results);
-            // Array to track each Instagram request.
             var promises = [];
-
             locIds.forEach(function (id) {
                 var mediaUrl = 'https://api.instagram.com/v1/locations/' + id +
                     '/media/recent?access_token=' + accessToken;
@@ -271,13 +176,12 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
             place.isGettingInstagrams(false);
         }, 5000);
 
-        var accessToken = '1582950873.10c5b95.cbfb0efc6d0d4242aec054371dfa8afe'; //Get an access token
+        var accessToken = '1582950873.10c5b95.cbfb0efc6d0d4242aec054371dfa8afe';
         var locationUrl = 'https://api.instagram.com/v1/locations/search?lat=' +
             place.geometry.location.lat() + '&lng=' +
             place.geometry.location.lng() + '&distance=50&access_token=' +
             accessToken;
 
-        // Get locations from Instagram near the input place's coordinates.
         var locationSearch = $.ajax({
             type: "GET",
             dataType: "jsonp",
@@ -305,7 +209,7 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
     // Currently selected location.
     self.chosenPlace = ko.observable();
 
-    // Value associated with user input from search bar used to filter results.
+    // User input from the search bar.
     self.query = ko.observable('');
 
     // Break the user's search query into separate words and make them lowercase
@@ -314,13 +218,6 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         return self.query().toLowerCase().split(' ');
     });
 
-    /*
-     * Takes user's input in search bar and compares each word against the name
-     * of each place in allPlaces.  Also compares against the place's type
-     * (bar, restaurant, etc.).  All places are initially removed from the
-     * filteredPlaces array then added back if the comparison between name or
-     * type returns true.
-     */
     self.search = function () {
         self.chosenPlace(null);
         infowindow.setMap(null);
@@ -330,8 +227,7 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         });
         self.searchTerms().forEach(function (word) {
             self.allPlaces().forEach(function (place) {
-                // If search term is in the place's name or if the search term
-                // is one of the place's types, that is a match.
+                // Finding a match
                 if (place.name.toLowerCase().indexOf(word) !== -1 ||
                     place.types.indexOf(word) !== -1) {
                     place.isInFilteredList(true);
@@ -341,8 +237,6 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         });
     };
 
-    // Sets which place is the chosenPlace, makes its marker bounce, and
-    // displays its infowindow.
     self.selectPlace = function (place) {
         if (place === self.chosenPlace()) {
             self.displayInfo(place);
@@ -352,6 +246,7 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
             });
             self.chosenPlace(place);
             self.chosenPhotoIndex(0);
+            //Make it BOUNCE!
             place.marker.setAnimation(google.maps.Animation.BOUNCE);
             self.displayInfo(place);
         }
@@ -360,16 +255,14 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
     // Boolean to determine whether or not to show the list view.
     self.displayingList = ko.observable(true);
 
-    // Determines which icon the button that toggles the list view will have.
-    // Based on whether or not list is currently displaying.
     self.listToggleIcon = ko.computed(function () {
         if (self.displayingList()) {
+            //Font Awesome specific classes
             return 'fa fa-minus-square fa-2x fa-inverse';
         }
         return 'fa fa-plus-square fa-2x fa-inverse'
     });
 
-    // If list view is shown, hide it.  Otherwise, show it.
     self.toggleListDisplay = function () {
         if (self.displayingList()) {
             self.displayingList(false);
@@ -378,11 +271,6 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         }
     };
 
-    /*
-     * Executes a getDetails request for the selected place and displays the
-     * infowindow for the place with the resulting information.
-     * @param {Object} place A PlaceResult object.
-     */
     self.displayInfo = function (place) {
         var request = {
             placeId: place.place_id
@@ -396,7 +284,6 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
             var locOpenHours = '';
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 if (details.website) {
-                    // Add a link to the location's website in the place's name.
                     locName = '<h4><a target="_blank" href=' + details.website +
                         '>' + place.name + '</a></h4>';
                 }
@@ -429,8 +316,6 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
     // Boolean to determine whether or not to show Instagram photo gallery.
     self.viewingPhotos = ko.observable(false);
 
-    // If viewing photo gallery, close it.  Otherwise open the photo gallery.
-    // Map should not be draggable while viewing photos.
     self.togglePhotoDisplay = function () {
         if (self.viewingPhotos()) {
             self.viewingPhotos(false);
@@ -446,17 +331,13 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         resizePhoto();
     };
 
-    // An index of chosenPlace's instagram array.  The photo at this index
-    // will be displayed on screen.
+    // Observable specifying which photo to display on screen
     self.chosenPhotoIndex = ko.observable(0);
 
-    // Index to display on screen because people aren't computers
-    // and want to start counting at 1, not 0.
     self.chosenPhotoViewableIndex = ko.computed(function () {
         return self.chosenPhotoIndex() + 1;
     });
 
-    // Photo to display when viewingPhotos is true.
     self.chosenPhoto = ko.computed(function () {
         if (self.chosenPlace()) {
             return self.chosenPlace().instagrams()[self.chosenPhotoIndex()];
@@ -472,10 +353,8 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         return 'No Caption';
     });
 
-    // The caption element's opacity.
     self.captionOpacity = ko.observable(1);
 
-    // Hide or show the caption by changing its opacity.
     self.toggleCaption = function () {
         if (self.captionOpacity() === 1) {
             self.captionOpacity(0);
@@ -484,8 +363,6 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         }
     };
 
-    // Change the chosenPhoto to the next photo in the chosenPlace's instagram
-    // array.  If at the end of the array, start back at the beginning.
     self.nextPhoto = function () {
         if (self.chosenPhotoIndex() !==
             self.chosenPlace().instagrams().length - 1) {
@@ -495,8 +372,6 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         }
     };
 
-    // Change the chosenPhoto to the previous photo in the chosenPlace's
-    //instagram array.  If at the beginning of the array, go to the end.
     self.prevPhoto = function () {
         if (self.chosenPhotoIndex() !== 0) {
             self.chosenPhotoIndex(self.chosenPhotoIndex() - 1);
@@ -505,7 +380,6 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         }
     };
 
-    // Height and width value for Instagram photo being displayed.
     self.photoDimensionValue = ko.observable();
 
     // Height and width in pixels for Instagram photo.  For use in data-bind.
@@ -513,9 +387,6 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         return self.photoDimensionValue() + 'px';
     });
 
-    // Determines text to display when mouse is hovered over Instagram button.
-    // Will let user know if any Instagrams were found for the location or
-    // if the application is still trying to retrieve Instagrams.
     self.getInstagramStatus = ko.computed(function () {
         if (self.chosenPlace()) {
             if (self.chosenPlace().instagrams().length != 0 &&
@@ -537,15 +408,12 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
 
     initialize();
 
-    // When the window is resized, update the size of the displayed photo and
-    // make sure the map displays all markers.
     window.addEventListener('resize', function (e) {
         map.fitBounds(bounds);
         resizePhoto();
     });
 
-    // If the photo gallery is being displayed, user can move through photos
-    // with the left and right arrow keys.
+    //Allows arrow key navigation in the instagram viewer
     document.addEventListener('keyup', function (e) {
         if (self.viewingPhotos()) {
             if (e.keyCode === 37) {
@@ -557,14 +425,11 @@ var ViewModel = function() { //Note that I haven't closed this function yet.
         }
     });
 
-    // When infowindow is closed, stop the marker's bouncing animation and
-    // deselect the place as chosenPlace.
     google.maps.event.addListener(infowindow,'closeclick',function(){
         self.chosenPlace().marker.setAnimation(null);
         self.chosenPlace(null);
     });
 
-    // When the page loads, if the width is less than 650px, hide the list view
     $(function () {
         if ($(window).width() < 650) {
             if (self.displayingList()) {

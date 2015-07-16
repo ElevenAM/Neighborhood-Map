@@ -176,7 +176,7 @@ var ViewModel = function() {
             place.isGettingInstagrams(false);
         }, 5000);
 
-        var accessToken = '1582950873.10c5b95.cbfb0efc6d0d4242aec054371dfa8afe';
+        var accessToken = '2013063220.1677ed0.b3cf004364e64025a84e72623fe0aa32';
         var locationUrl = 'https://api.instagram.com/v1/locations/search?lat=' +
             place.geometry.location.lat() + '&lng=' +
             place.geometry.location.lng() + '&distance=50&access_token=' +

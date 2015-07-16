@@ -210,7 +210,7 @@ h4 {
 }
 
 .list-view-hidden {
-  transform: translateX(-100%) !important;
+  transform: translateX(-150%) !important;
 }
 
 /* Photo Gallery Classes */
@@ -362,7 +362,7 @@ h4 {
   .search {
     width: 75%;
     top: 5px;
-    left: 5px;
+    right: 5px;
   }
 }
 

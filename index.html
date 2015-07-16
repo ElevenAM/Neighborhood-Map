@@ -12,8 +12,8 @@
   </style>
     <link href="css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
-<!--Was having issues pulling certain Places functionality from Google so I made requests
-for both Google Maps and Google Places-->
+  <link rel="stylesheet" type="text/css" href="css/offline-theme-default.css">
+  <link rel="stylesheet" type="text/css" href="css/offline-language-english.css">
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQrpDHpHEuyRGCZcH_Rsf74BXf0_eQkI8&libraries=places"></script>
 
 <head>
@@ -32,7 +32,7 @@ for both Google Maps and Google Places-->
                                            css: {'small-list-toggle': !displayingList() }">
     <!--Font awesome specific i tag to create icons and icon functions-->
     <i data-bind="css: {'fa-minus-square': displayingList(),
-                    "fa-plus-square": !displayingList() }" class="fa fa-2x fa-inverse"></i>
+                    'fa-plus-square': !displayingList() }" class="fa fa-2x fa-inverse"></i>
   </button>
   <ul class="filtered-places" data-bind="visible: filteredPlaces().length,
                                            foreach: {data: filteredPlaces, as: 'place'},
@@ -104,6 +104,17 @@ for both Google Maps and Google Places-->
 
   <script src="js/knockout-3.3.0.js"></script>
   <script src="js/jQuery.js"></script>
+  <script src="js/offline-js.min.js"></script>
+  01
+<script>
+  Offline.options = {
+    checkOnLoad: false,
+    interceptRequests: true,
+    reconnect: false,
+    requests: true
+  }
+</script>
+
   <script type="text/javascript" src="js/app.js"></script>
 </body>
 

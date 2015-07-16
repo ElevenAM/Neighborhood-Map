@@ -137,7 +137,7 @@ var ViewModel = function() {
                 url: url,
                 success: function (results) {
                     results.data.forEach(function (result) {
-                        place.instagrams.push(result)
+                        place.instagrams.push(result);
                     });
                     def.resolve();
                 }
@@ -190,7 +190,7 @@ var ViewModel = function() {
         });
 
         locationSearch.then(function (data) {
-            getAllPhotos(data)
+            getAllPhotos(data);
         });
     };
 

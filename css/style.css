@@ -6,10 +6,9 @@
 }
 
 html,
-body,
 
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 p {
@@ -236,7 +235,7 @@ h4 {
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
-  height: Calc(100% - 160px);
+  height: calc(100% - 160px);
   width: auto;
   border-radius: 5px;
   box-shadow: 0 0 50px #000;

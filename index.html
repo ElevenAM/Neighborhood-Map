@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700|Trocchi' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,300,700|Trocchi' rel='stylesheet">
 
   <style type="text/css">
     html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
@@ -21,8 +21,8 @@ for both Google Maps and Google Places-->
 <body>
   <div id="map-canvas"></div>
 
-  <form class='search' data-bind="submit: search">
-    <input class="search-bar" data-bind="value: query" placeholder="Filter results by name or type" autofocus></input>
+  <form class="search" data-bind="submit: search">
+    <input class="search-bar" data-bind="value: query" placeholder="Filter results by name or type" autofocus>
     <button class="search-button" type="submit">
       <i class="fa fa-search fa-2x fa-inverse"></i>
     </button>
@@ -32,7 +32,7 @@ for both Google Maps and Google Places-->
                                            css: {'small-list-toggle': !displayingList() }">
     <!--Font awesome specific i tag to create icons and icon functions-->
     <i data-bind="css: {'fa-minus-square': displayingList(),
-                    'fa-plus-square': !displayingList() }" class="fa fa-2x fa-inverse"></i>
+                    "fa-plus-square": !displayingList() }" class="fa fa-2x fa-inverse"></i>
   </button>
   <ul class="filtered-places" data-bind="visible: filteredPlaces().length,
                                            foreach: {data: filteredPlaces, as: 'place'},

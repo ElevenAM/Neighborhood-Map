@@ -32,7 +32,7 @@ for both Google Maps and Google Places-->
                                            css: {'small-list-toggle': !displayingList() }">
     <!--Font awesome specific i tag to create icons and icon functions-->
     <i data-bind="css: {'fa-minus-square': displayingList(),
-                    "fa-plus-square": !displayingList() }" class="fa fa-2x fa-inverse"></i>
+                    'fa-plus-square': !displayingList() }" class="fa fa-2x fa-inverse"></i>
   </button>
   <ul class="filtered-places" data-bind="visible: filteredPlaces().length,
                                            foreach: {data: filteredPlaces, as: 'place'},

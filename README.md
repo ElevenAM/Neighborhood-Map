@@ -36,9 +36,6 @@ knockout.js: Responsible for displaying up to date images pulled through the Ins
 jQuery.js: DOM manipulation has never been easier
 
 
-# Neighborhood-Map
-Udacity Project 5
-
 Key Reference Sites
 -------------------
 

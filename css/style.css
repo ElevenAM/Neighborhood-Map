@@ -377,3 +377,24 @@ h4 {
     font-size: 16px;
   }
 }
+
+#status {
+  position: absolute;
+  top: 15px;
+  margin-left: 30%;
+  margin-right: 30%;
+  width: 40%;
+  font: bold 1em sans-serif;
+  color: #FFF;
+  padding: 0.5em;
+  z-index: 250;
+  text-align: center;
+}
+
+.online {
+  background: green;
+}
+
+.offline {
+  background: red;
+}

@@ -435,3 +435,19 @@ var ViewModel = function() {
 };
 
 ko.applyBindings(new ViewModel());
+
+window.addEventListener('load', function() {
+    var status = document.getElementById("status");
+
+    function updateOnlineStatus(event) {
+        var condition = navigator.onLine ? "online" : "offline";
+
+        status.className = condition;
+        status.innerHTML = condition.toUpperCase();
+        $("#status").fadeIn()
+        $("#status").delay(1000).fadeOut();
+    }
+
+    window.addEventListener('online',  updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+});

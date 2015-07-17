@@ -6,7 +6,6 @@
 }
 
 html,
-
 body {
   font-family: "Lato", sans-serif;
 }
@@ -95,13 +94,13 @@ h4 {
 .filtered-places {
   z-index: 100;
   position: fixed;
-  left: 0px;
+  left: 0;
   top: 50px;
   background: none;
   height: auto;
   max-height: 100%;
-  overflow-y: list-view-hidden;
-  width: 340px;
+  overflow-y: scroll;
+  width: 290px;
   transition: 0.2s;
 }
 
@@ -161,7 +160,7 @@ h4 {
   width: 215px;
 }
 
-#instagram-button {
+.instagram-button {
   position: absolute;
   bottom: 15px;
   background: none;
@@ -175,13 +174,13 @@ h4 {
   backface-visibility: hidden;
 }
 
-#instagram-button:enabled:active {
+.instagram-button:enabled:active {
   transform: translateX(-50%) scale(0.8, 0.8);
   background: none;
   border: 0;
 }
 
-#instagram-button:disabled {
+.instagram-button:disabled {
   opacity: 0.5;
 }
 
@@ -200,7 +199,7 @@ h4 {
   box-shadow: 0 0 5px #000 inset;
 }
 
-#instagram-button:hover + .photo-status {
+.instagram-button:hover + .photo-status {
   opacity: 1;
 }
 
@@ -221,7 +220,7 @@ h4 {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.85);
-  font-family: 'Trocchi', serif;
+  font-family: "Trocchi", serif;
   color: white;
 }
 
@@ -351,9 +350,9 @@ h4 {
 /* Media Queries */
 @media (max-width: 450px) {
   .filtered-places {
-    left: 50%;
+    left: 45%;
     transform: translateX(-50%);
-    width: 100%;
+    width: 90%;
   }
   .list-toggle {
     width: 100%;

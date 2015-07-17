@@ -203,7 +203,7 @@ var ViewModel = function() {
     self.filteredPlaces = ko.computed(function () {
         return self.allPlaces().filter(function (place) {
             return place.isInFilteredList();
-        });
+        })
     });
 
     // Currently selected location.
@@ -233,7 +233,7 @@ var ViewModel = function() {
                     place.isInFilteredList(true);
                     place.marker.setMap(map);
                 }
-            })
+            });
         });
     };
 
@@ -260,7 +260,7 @@ var ViewModel = function() {
             //Font Awesome specific classes
             return 'fa fa-minus-square fa-2x fa-inverse';
         }
-        return 'fa fa-plus-square fa-2x fa-inverse'
+        return 'fa fa-plus-square fa-2x fa-inverse';
     });
 
     self.toggleListDisplay = function () {
@@ -310,7 +310,7 @@ var ViewModel = function() {
             infowindow.setContent(content);
             infowindow.open(map, place.marker);
             map.panTo(place.marker.position);
-        })
+        });
     };
 
     // Boolean to determine whether or not to show Instagram photo gallery.
@@ -389,7 +389,7 @@ var ViewModel = function() {
 
     self.getInstagramStatus = ko.computed(function () {
         if (self.chosenPlace()) {
-            if (self.chosenPlace().instagrams().length != 0 &&
+            if (self.chosenPlace().instagrams().length !== 0 &&
                 !self.chosenPlace().isGettingInstagrams()) {
                 return 'Click to view recent Instagrams from ' +
                     self.chosenPlace().name;
@@ -407,11 +407,6 @@ var ViewModel = function() {
     });
 
     initialize();
-
-    window.addEventListener('resize', function (e) {
-        map.fitBounds(bounds);
-        resizePhoto();
-    });
 
     //Allows arrow key navigation in the instagram viewer
     document.addEventListener('keyup', function (e) {

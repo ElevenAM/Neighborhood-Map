@@ -3,8 +3,6 @@
 <head>
   <title>Neighborhood Map: Huntington Beach</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
   <link href="https://fonts.googleapis.com/css?family=Lato:400,300,700|Trocchi' rel='stylesheet">
 
   <style type="text/css">
@@ -60,14 +58,14 @@
 
   <!-- Instagram Viewer -->
   <div data-bind="if: chosenPlace">
-    <button id="instagram-button" class="center-x" data-bind="click: togglePhotoDisplay,
+    <button class="instagram-button center-x" data-bind="click: togglePhotoDisplay,
                                              disable: chosenPlace().instagrams().length === 0">
       <img src="images/instagram.png">
     </button>
     <p class="photo-status center-x" data-bind="text: getInstagramStatus"></p>
   </div>
   <div data-bind="ifnot: chosenPlace">
-    <button id="instagram-button" class="center-x" disabled>
+    <button class="instagram-button center-x" disabled>
       <img src="images/instagram.png">
     </button>
     <p class="photo-status center-x">Please select a location to view Instagrams</p>
@@ -104,17 +102,12 @@
 
   <script src="js/knockout-3.3.0.js"></script>
   <script src="js/jQuery.js"></script>
-  <script src="js/offline-js.min.js"></script>
-  01
-<script>
-  Offline.options = {
-    checkOnLoad: false,
-    interceptRequests: true,
-    reconnect: false,
-    requests: true
+  <script src="js/offline.min.js"></script>
+  <script>
+  {
+    Offline.options = {checks: {image: {url: 'favicon.ico'}, active: 'image'}}
   }
-</script>
-
+  </script>
   <script type="text/javascript" src="js/app.js"></script>
 </body>
 

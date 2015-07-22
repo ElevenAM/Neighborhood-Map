@@ -192,7 +192,7 @@ var ViewModel = function() {
         locationSearch.then(function (data) {
             getAllPhotos(data);
         });
-    };
+    }
 
     // An array that will contain all places that are initially retrieved by
     // the getAllPlaces function.
@@ -203,7 +203,7 @@ var ViewModel = function() {
     self.filteredPlaces = ko.computed(function () {
         return self.allPlaces().filter(function (place) {
             return place.isInFilteredList();
-        })
+        });
     });
 
     // Currently selected location.
@@ -444,7 +444,7 @@ window.addEventListener('load', function() {
 
         status.className = condition;
         status.innerHTML = condition.toUpperCase();
-        $("#status").fadeIn()
+        $("#status").fadeIn();
         $("#status").delay(1000).fadeOut();
     }
 

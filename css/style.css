@@ -1,4 +1,5 @@
 /* Basic Styles */
+
 * {
   margin: 0;
   padding: 0;
@@ -15,7 +16,7 @@ p {
 }
 
 li {
-  list-style-type: none;
+  list-style: none;
 }
 
 a {
@@ -37,12 +38,14 @@ h4 {
 }
 
 /* General Classes */
+
 .center-x {
   left: 50%;
   transform: translateX(-50%);
 }
 
 /* Map View Classes */
+
 .search {
   z-index: 100;
   position: fixed;
@@ -114,7 +117,7 @@ h4 {
   outline: 0;
   background: #fd6818;
   transition: 0.2s;
-  z-index: 200
+  z-index: 200;
 }
 
 .place {
@@ -212,6 +215,7 @@ h4 {
 }
 
 /* Photo Gallery Classes */
+
 .backdrop {
   z-index: 8000;
   position: fixed;
@@ -254,9 +258,9 @@ h4 {
 }
 
 .photo-caption {
+  font: 200 14px "Lato", sans-serif;
   background: white;
   color: black;
-  font-family: 'Lato', sans-serif;
   text-align: center;
   position: absolute;
   width: 100%;
@@ -265,8 +269,6 @@ h4 {
   padding: 5px;
   border-top: 1px solid #5d5a5a;
   border-bottom: 1px solid #5d5a5a;
-  font-size: 14px;
-  font-weight: 200;
 }
 
 .next-photo,
@@ -348,15 +350,18 @@ h4 {
 }
 
 /* Media Queries */
+
 @media (max-width: 450px) {
   .filtered-places {
     left: 45%;
     transform: translateX(-50%);
     width: 90%;
   }
+
   .list-toggle {
     width: 100%;
   }
+
   .search {
     width: 75%;
     top: 5px;
@@ -368,15 +373,19 @@ h4 {
   .photo-place-name {
     font-size: 20px;
   }
+
   .photo-loc {
     font-size: 12px;
   }
 }
+
 @media (max-width: 350px) {
   .photo-place-name {
     font-size: 16px;
   }
 }
+
+/*Is it okay to use ID's when you want to use getElementbyID()? */
 
 #status {
   position: absolute;
